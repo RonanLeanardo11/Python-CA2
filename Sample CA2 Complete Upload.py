@@ -16,7 +16,7 @@ class TemperatureSensor:
     numberOfSensors = 0
                                                                                         # harcode date as a string for current time
     def __init__(self, Current_Temp_Reading_in, Time_in, Current_Temp_Type_in="celsius", Current_Date_in= datetime.datetime.now().strftime('%Y-%m-%d'), Location_in=1):
-        TemperatureSensor.numberOfSensors += 1
+        TemperatureSensor.numberOfSensors += 1      # Increment static variable each time its Class called
 
         # assume we can't have a a temp reading lower than - 20
         if Current_Temp_Reading_in >= -20:
@@ -63,7 +63,7 @@ class TemperatureSensor:
         if self.CurrentTempType.lower() == "fahrenheit":
             print("Celsius Temp is {}".format(Temperature.Temp_as_Cels(self.Current_Temp())))
         print("Current Temperature: {}".format(self.Current_Temp()))
-        print("Current Temperature Type: {}".format(self.CurrentTempType))
+        print("Current Temperature Type: {}".format(self.CurrentTempType.capitalize())) # Capitalize for printing
         print("Current Date: {}".format(self.CurrentDate))
         print("Current Time: {}".format(self.time))
         print("Current Location: Zone {}".format(self.Location))
@@ -75,16 +75,28 @@ class TemperatureSensor:
 # Create list and append 4 object to the list
 TempList = []
 
-Temp1 = TempList.append(TemperatureSensor(50, "10:0", "celsius", "2018-02-04", 4))
+Temp1 = TempList.append(TemperatureSensor(20, "10:0", "celsius", "2018-02-04", 4))
 Temp2 = TempList.append(TemperatureSensor(30, "10:00", "Celsius", "2019-05-04", 2))
 Temp3 = TempList.append(TemperatureSensor(80, "12:00", "Fahrenheit", "2019-28-04", 1))
 Temp4 = TempList.append(TemperatureSensor(-10, "24:00", "Fahrenheit", "2019-28-10", 3))
 
 # Iterate through the list
 for temps in TempList:
-    temps: TemperatureSensor
+    temps: Temperature
     temps.print_details()
 
+# Average Temperatures
+TotalTemp = 0
+for temps in TempList:
+    temps: TemperatureSensor
+    if temps.CurrentTempType.lower() == "celsius":
+        TotalTemp += int(temps.CurrentTempReading) # Note this wont work if we return a string
+    else:
+        CelsiusTemps = Temperature.Temp_as_Cels(temps.CurrentTempReading) # Note this wont work if we return a string
+        TotalTemp += CelsiusTemps
+print("\nAverage Temperature is {}\n".format(TotalTemp/4))
+
+
 # Print Total Sensors
-print("\nTotal number of Sensors: {}".format(TemperatureSensor.numberOfSensors))
+print("Total number of Sensors: {}".format(TemperatureSensor.numberOfSensors))
 
